@@ -1,4 +1,6 @@
-# GitHub and Streamlit deployment handoff
+# GitHub publication and future Streamlit deployment
+
+Current scope: publish the public GitHub repository only. Do not deploy the app today. The Streamlit instructions below are future reference and require a separate deployment decision.
 
 ## Prepared configuration
 

@@ -4,6 +4,22 @@ A Python, Streamlit, pandas and Plotly portfolio project for evidence-based hosp
 
 **Public-release scope:** historical numerical observations are withheld pending reuse clearance. This repository does not currently provide historical hotel KPIs, borough price/occupancy charts, market rankings or historical market findings. It does not substitute fabricated data. The original local research workspace is not part of this repository.
 
+## Business problem
+
+Hotel strategy requires more than comparing headline room rates. An analyst must distinguish realized ADR from advertised prices, utilization from absolute demand, and room revenue from profit. Borough averages may reflect different hotel classes and guest mixes, while annual, monthly and year-to-date observations may not be comparable. Public availability also does not establish permission to redistribute data.
+
+This project makes those evidence boundaries visible and lets a reviewer test hotel revenue assumptions transparently. The public portfolio demonstrates the workflow without redistributing observations whose reuse rights have not been established.
+
+## Tools and methodology
+
+- **Python:** deterministic calculations, input validation and template-generated explanations/briefs.
+- **Streamlit:** the interactive portfolio application, with `app.py` as the entry point.
+- **pandas:** tabular scenario outputs and source coverage presentation.
+- **Plotly:** readable, labelled charts of hypothetical revenue.
+- **pytest / Streamlit AppTest:** arithmetic, validation, page interactions and operation without secrets.
+
+The research register records primary publishers, URLs, reporting periods, retrieval dates, geographic coverage and unresolved reuse conditions. Historical actuals, reporting frequencies, populations and hotel categories must match before comparison. Scenarios remain separate from historical evidence. No causal inference, fabricated observation or arbitrary opportunity score is used.
+
 ## Features
 
 - Navy, cream and teal consulting-style interface.
@@ -68,7 +84,9 @@ Tests check scenario arithmetic, invalid inputs, missing historical evidence, al
 
 Only the contents of this prepared public repository should be pushed. Do not copy the parent research directory, `.venv`, `.env`, secrets, generated historical briefs or screenshots into it.
 
-## GitHub and Streamlit deployment
+## Publication and future deployment
+
+Publishing this GitHub repository does not deploy the app. No deployment is being performed as part of the current publication task. The settings below are retained for a future, separately authorized deployment.
 
 Target repository: `Joe05062000/hotel-market-opportunity-explorer`.
 
