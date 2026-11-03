@@ -1,35 +1,53 @@
 # Hotel Market Opportunity Explorer
 
-A Python, Streamlit, pandas and Plotly portfolio project for evidence-based hospitality strategy in New York City. It combines a primary-source research register, a **guided data assistant that requires no API key**, and transparent hypothetical hotel room-revenue scenarios.
+**Explore hotel revenue assumptions without hiding the evidence gaps.**
 
-**Public-release scope:** historical numerical observations are withheld pending reuse clearance. This repository does not currently provide historical hotel KPIs, borough price/occupancy charts, market rankings or historical market findings. It does not substitute fabricated data. The original local research workspace is not part of this repository.
+Hospitality strategy depends on how room price, occupancy and capacity interact—not just headline rates. This Streamlit portfolio app lets a reviewer compare hypothetical hotel revenue cases, work through guided questions and download an evidence-availability brief. It also makes clear when the public data cannot support a market claim.
 
-## Business problem
+Built with **Python · Streamlit · pandas · Plotly**. The **guided data assistant requires no API key** and uses Python templates, not AI-generated chat.
 
-Hotel strategy requires more than comparing headline room rates. An analyst must distinguish realized ADR from advertised prices, utilization from absolute demand, and room revenue from profit. Borough averages may reflect different hotel classes and guest mixes, while annual, monthly and year-to-date observations may not be comparable. Public availability also does not establish permission to redistribute data.
+## App preview
 
-This project makes those evidence boundaries visible and lets a reviewer test hotel revenue assumptions transparently. The public portfolio demonstrates the workflow without redistributing observations whose reuse rights have not been established.
+Actual screenshots captured from the running **public app**, not mockups. Every amount shown is a **hypothetical input or calculated scenario result**. No excluded historical dataset, historical chart or research screenshot is used here. Browser tabs, credentials and personal information are outside the captures.
+
+### 1. Compare hotel revenue scenarios
+
+Open **Scenario explorer** and edit rooms, operating days, occupancy and nominal ADR for downside, base and upside cases. Python calculates available room-nights, expected sold room-nights, room revenue and RevPAR. Review the revenue chart and export the assumptions/results as CSV. Room revenue is **before costs, not profit**.
+
+![Scenario explorer with editable hypothetical hotel assumptions and calculated room revenue and RevPAR](docs/images/scenario-explorer.jpg)
+
+### 2. Explore a question with the guided data assistant
+
+Choose one of five presets under **Explore the data**. The RevPAR preset compares two user-defined assumptions and explains the arithmetic. Historical questions return source references and an explicit evidence-unavailable explanation rather than invented results. No API key, external model or AI chat is involved.
+
+![Guided data assistant calculating the RevPAR effect of hypothetical occupancy assumptions](docs/images/guided-data-assistant.jpg)
+
+### 3. Download a public evidence brief
+
+Open **Market brief** and download a Markdown summary of evidence availability, risks, source reporting periods and reuse limitations. Optionally include the revenue cases you just edited in a separate hypothetical section. This implemented download is an **evidence-availability brief**, not a historical market assessment.
+
+![Public evidence brief with its download button and optional hypothetical scenario inclusion](docs/images/market-brief.jpg)
+
+## Implemented versus planned
+
+| Available in the public app today | Planned additions; not publicly available today |
+|---|---|
+| Editable hotel revenue scenarios, calculated outputs, Plotly chart and CSV export | Historical numerical KPI cards and trend charts, subject to reuse clearance |
+| Five-question guided data assistant, with local Python calculations and evidence-limit explanations | Like-for-like borough rate/occupancy comparisons, subject to matched hotel categories, periods and reporting populations |
+| Downloadable public evidence brief with optional hypothetical cases | Historical market findings, after appropriate source and upstream redistribution rights are documented |
+| Primary-source register, reporting coverage, reuse notes and borough coverage review | Permissioned numerical datasets with documented sample coverage |
+
+Historical numerical observations are **withheld pending reuse clearance**. The current public repository does not provide historical hotel results, borough price/occupancy rankings or investment recommendations. The complete original research version is preserved locally and is not redistributed here. See [excluded data and reuse decisions](docs/DATA_REUSE.md).
 
 ## Tools and methodology
 
-- **Python:** deterministic calculations, input validation and template-generated explanations/briefs.
-- **Streamlit:** the interactive portfolio application, with `app.py` as the entry point.
-- **pandas:** tabular scenario outputs and source coverage presentation.
-- **Plotly:** readable, labelled charts of hypothetical revenue.
-- **pytest / Streamlit AppTest:** arithmetic, validation, page interactions and operation without secrets.
+- **Python:** deterministic scenario formulas, validation and template-generated explanations/briefs.
+- **Streamlit:** interactive application; `app.py` is the entry point.
+- **pandas:** scenario tables and source-coverage presentation.
+- **Plotly:** labelled charts of hypothetical revenue.
+- **pytest / Streamlit AppTest:** calculations, validation, page interactions and operation without secrets.
 
-The research register records primary publishers, URLs, reporting periods, retrieval dates, geographic coverage and unresolved reuse conditions. Historical actuals, reporting frequencies, populations and hotel categories must match before comparison. Scenarios remain separate from historical evidence. No causal inference, fabricated observation or arbitrary opportunity score is used.
-
-## Features
-
-- Navy, cream and teal consulting-style interface.
-- Guided data assistant with five preset questions, deterministic Python/template responses, source references and honest evidence-unavailable explanations. It is **not AI-generated chat**.
-- Downside/base/upside scenarios with editable rooms, operating days, occupancy and nominal ADR.
-- Calculated available room-nights, expected sold room-nights, room revenue and RevPAR; chart and CSV download.
-- Borough source-coverage review with missing coverage and hotel-category/sample limitations; no unsupported ranking.
-- Downloadable public evidence-availability brief, with optional user scenarios separated from historical evidence.
-- Source register with publication/retrieval dates, periods, upstream attribution and reuse decisions.
-- No external API, credentials, runtime sign-in or historical dataset download required.
+The research register records primary publishers, URLs, reporting periods, retrieval dates, geographic coverage and unresolved reuse conditions. Historical comparisons require matching periods, units, geography, hotel categories and reporting populations. Scenarios never fill missing historical observations, and arithmetic relationships do not establish causation.
 
 ## Run locally
 
@@ -44,7 +62,7 @@ python -m pip install -r requirements.txt
 streamlit run app.py
 ```
 
-The clone URL is the intended repository destination; publication requires GitHub authentication if the repository has not yet been created. If you already have the prepared folder, start there and skip the clone steps. On Windows, activate with `.venv\Scripts\activate`.
+On Windows, activate with `.venv\Scripts\activate`. No API key or account sign-in is required to run the app.
 
 `app.py` at the repository root is the Streamlit entry point. `requirements.txt` pins Streamlit, pandas and Plotly to the locally verified versions. No system packages are required. **Do not add any secrets for this public app.** It neither reads API keys nor calls an AI service. An optional AI experiment exists only in the separate local research workspace and is not a public feature.
 
@@ -88,7 +106,7 @@ Only the contents of this prepared public repository should be pushed. Do not co
 
 Publishing this GitHub repository does not deploy the app. No deployment is being performed as part of the current publication task. The settings below are retained for a future, separately authorized deployment.
 
-Target repository: `Joe05062000/hotel-market-opportunity-explorer`.
+Repository: `Joe05062000/hotel-market-opportunity-explorer`.
 
 | Setting | Value |
 |---|---|

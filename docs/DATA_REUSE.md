@@ -13,6 +13,10 @@ Reviewed November 2, 2026. This document records publication conditions and unre
 
 Original application code, definitions, calculation methods, hypothetical defaults, tests using explicitly hypothetical inputs, and source/period/permission metadata. The public assistant is a guided data assistant requiring no API key. Scenario outputs are user-assumption calculations, not disguised historical observations. A generated public brief explains evidence availability; it does not reproduce the local research brief’s market findings.
 
+## Public app screenshots
+
+The README images in `docs/images/` are original desktop captures of the working public application: the hypothetical scenario explorer, guided calculation preset and public evidence brief. They show only original UI, user-assumption calculations and evidence-availability text. No publisher imagery, excluded numerical historical observations or historical research screenshots appear in them. Their exact reviewed file checksums are recorded in the release-check script; other media remain excluded.
+
 ## What is omitted
 
 The original research CSVs, borough observation and coverage files, historical numerical KPI cards, historical charts and takeaways, derived historical Markdown briefs, screenshots of those results, downloaded reports, credentials and unrelated local files. They remain outside this repository in the separate local research workspace. The public app cannot read its parent folder or import the local research app.
