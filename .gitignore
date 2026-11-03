@@ -1,0 +1,47 @@
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+# Local secrets and credentials
+.env
+.env.*
+!.env.example
+secrets.toml
+secrets.*.toml
+.streamlit/secrets.toml
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+credentials*.json
+api_keys.*
+api-keys.*
+.secrets/
+.netrc
+.aws/
+# Local output and editor files
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+build/
+dist/
+*.egg-info/
+# Unapproved research data and derived outputs
+local_research/
+data/observations.csv
+data/borough_observations.csv
+data/borough_coverage.json
+docs/market_brief.md
+docs/*preview*.png
+*.pdf

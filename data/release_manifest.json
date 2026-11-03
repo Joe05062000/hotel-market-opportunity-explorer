@@ -1,0 +1,25 @@
+{
+  "edition": "public",
+  "reviewed_on": "2026-11-02",
+  "observations_included": false,
+  "historical_numeric_claims_enabled": false,
+  "approved_observation_files": [],
+  "excluded_categories": [
+    "Citywide hotel and visitor observations",
+    "Borough ADR and occupancy observations",
+    "Derived historical briefs and screenshots",
+    "Publisher images, logos, charts and full reports"
+  ],
+  "reason": "Written permission or an explicit applicable reuse license has not been established. Attribution is not permission.",
+  "source_ids": [
+    "tourism_trends_2024",
+    "tourism_2025",
+    "nyc_cash_2025q2",
+    "nyc_tourism_2025",
+    "nys_plan_2024",
+    "nys_hotel_2026_discovery",
+    "tourism_barometer_may2023",
+    "nyc_dof_tax2025",
+    "nyc_dcp_feis2021"
+  ]
+}
