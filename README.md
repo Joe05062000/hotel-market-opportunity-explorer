@@ -1,5 +1,7 @@
 # Hotel Market Opportunity Explorer
 
+[Open the live app](https://hotel-market-opportunity-explorer.streamlit.app/)
+
 **Explore hotel revenue assumptions without hiding the evidence gaps.**
 
 Hospitality strategy depends on how room price, occupancy and capacity interact—not just headline rates. This Streamlit portfolio app lets a reviewer compare hypothetical hotel revenue cases, work through guided questions and download an evidence-availability brief. It also makes clear when the public data cannot support a market claim.
@@ -102,11 +104,9 @@ Tests check scenario arithmetic, invalid inputs, missing historical evidence, al
 
 Only the contents of this prepared public repository should be pushed. Do not copy the parent research directory, `.venv`, `.env`, secrets, generated historical briefs or screenshots into it.
 
-## Publication and future deployment
+## Live deployment
 
-Publishing this GitHub repository does not deploy the app. No deployment is being performed as part of the current publication task. The settings below are retained for a future, separately authorized deployment.
-
-Repository: `Joe05062000/hotel-market-opportunity-explorer`.
+The public app is deployed on [Streamlit Community Cloud](https://hotel-market-opportunity-explorer.streamlit.app/).
 
 | Setting | Value |
 |---|---|
@@ -114,11 +114,9 @@ Repository: `Joe05062000/hotel-market-opportunity-explorer`.
 | Branch | `main` |
 | Main file path | `app.py` |
 | Python version | `3.12` |
-| Secrets | Leave empty |
-| Audience | Public portfolio app; verify public visibility in app settings |
+| Secrets | None required or configured |
+| Visibility | Public |
 
-If the repository has not been created, run `gh auth login --hostname github.com --git-protocol https --web` in your terminal, then `bash scripts/publish_github.sh` from this repository. The script verifies the authenticated owner, refuses an existing destination and does not rewrite history.
+The deployed scenario explorer, guided assistant and Markdown brief download were verified on November 6, 2026. The complete original research application remains local; only this public release is hosted. Historical observations remain withheld as documented above.
 
-Sign in to [Streamlit Community Cloud](https://share.streamlit.io/), connect the GitHub account, choose **Create app → Yup, I have an app**, and enter the settings above. Select Python 3.12 under **Advanced settings**, leave secrets empty, then deploy. Confirm public visibility under the app’s sharing settings. No deployed URL is claimed until Community Cloud completes deployment.
-
-See [the deployment checklist](docs/DEPLOYMENT.md). These steps follow [Streamlit’s official deployment guide](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy).
+See [deployment details](docs/DEPLOYMENT.md). Future changes pushed to `main` are picked up by Community Cloud. Follow [Streamlit’s deployment guide](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy) when changing runtime settings or creating another deployment.
