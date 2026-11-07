@@ -10,23 +10,23 @@ Built with **Python · Streamlit · pandas · Plotly**. The **guided data assist
 
 ## App preview
 
-Actual screenshots captured from the running **public app**, not mockups. Every amount shown is a **hypothetical input or calculated scenario result**. No excluded historical dataset, historical chart or research screenshot is used here. Browser tabs, credentials and personal information are outside the captures.
+These screenshots show the working public features in an earlier layout. The live app now opens directly to Scenario Explorer, with Guided Analysis and Market Brief & Sources in the sidebar. Every amount shown is a **hypothetical input or calculated scenario result**. No excluded historical dataset, historical chart or research screenshot is used here. Browser tabs, credentials and personal information are outside the captures.
 
 ### 1. Compare hotel revenue scenarios
 
-Open **Scenario explorer** and edit rooms, operating days, occupancy and nominal ADR for downside, base and upside cases. Python calculates available room-nights, expected sold room-nights, room revenue and RevPAR. Review the revenue chart and export the assumptions/results as CSV. Room revenue is **before costs, not profit**.
+Open **Scenario Explorer** and edit rooms, operating days, occupancy and nominal ADR for downside, base and upside cases. Python calculates available room-nights, expected sold room-nights, room revenue and RevPAR. Review the revenue chart and export the assumptions/results as CSV. Room revenue is **before costs, not profit**.
 
 ![Scenario explorer with editable hypothetical hotel assumptions and calculated room revenue and RevPAR](docs/images/scenario-explorer.jpg)
 
 ### 2. Explore a question with the guided data assistant
 
-Choose one of five presets under **Explore the data**. The RevPAR preset compares two user-defined assumptions and explains the arithmetic. Historical questions return source references and an explicit evidence-unavailable explanation rather than invented results. No API key, external model or AI chat is involved.
+Choose one of five presets under **Guided Analysis**. The RevPAR preset compares two user-defined assumptions and explains the arithmetic. Historical questions return source references and an explicit evidence-unavailable explanation rather than invented results. No API key, external model or AI chat is involved.
 
 ![Guided data assistant calculating the RevPAR effect of hypothetical occupancy assumptions](docs/images/guided-data-assistant.jpg)
 
 ### 3. Download a public evidence brief
 
-Open **Market brief** and download a Markdown summary of evidence availability, risks, source reporting periods and reuse limitations. Optionally include the revenue cases you just edited in a separate hypothetical section. This implemented download is an **evidence-availability brief**, not a historical market assessment.
+Open **Market Brief & Sources** for historical coverage, research references and the source register. Download a Markdown summary of evidence availability, risks, source reporting periods and reuse limitations. Optionally include the revenue cases you just edited in a separate hypothetical section. This implemented download is an **evidence-availability brief**, not a historical market assessment.
 
 ![Public evidence brief with its download button and optional hypothetical scenario inclusion](docs/images/market-brief.jpg)
 

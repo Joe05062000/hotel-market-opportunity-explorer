@@ -57,27 +57,32 @@ def test_public_app_all_pages_and_presets_without_secrets(monkeypatch):
     monkeypatch.delenv('OPENAI_MODEL',raising=False)
     app=AppTest.from_file(str(ROOT/'app.py')).run(timeout=30)
     assert not app.exception
-    assert not app.metric and not app.chat_input
+    assert app.sidebar.radio[0].options == ['Scenario Explorer', 'Guided Analysis', 'Market Brief & Sources']
+    assert app.sidebar.radio[0].value == 'Scenario Explorer'
+    assert app.metric[2].value == '$8,760,000.00'
+    assert not app.chat_input
     for page in list(app.sidebar.radio[0].options):
         app.sidebar.radio[0].set_value(page).run(timeout=30)
         assert not app.exception and not app.chat_input
-        if page in ['Market overview','Historical trends','Borough comparison','Price & demand']:
-            assert not app.get('plotly_chart')
-        if page=='Explore the data':
+        if page=='Guided Analysis':
             for question in QUESTIONS:
                 app.selectbox[0].set_value(question).run()
                 assert not app.exception
                 if question==QUESTIONS[3]:
                     app.slider[1].set_value(100.0).run()
                     assert app.metric[1].value=='$300.00'
-        if page=='Scenario explorer':
+        if page=='Scenario Explorer':
             app.number_input(key='Base_rooms').set_value(5).run()
             app.number_input(key='Base_days').set_value(20).run()
             app.slider(key='Base_occupancy').set_value(40.0).run()
             app.number_input(key='Base_adr').set_value(120.0).run()
             assert app.metric[2].value=='$4,800.00'
             assert app.metric[3].value=='$48.00'
-        if page=='Market brief':
+        if page=='Market Brief & Sources':
+            assert {button.label for button in app.get('download_button')} == {
+                'Download public evidence brief', 'Download source register (metadata only)'
+            }
+            assert any('Historical numerical observations are withheld' in note.value for note in app.info)
             app.checkbox[0].set_value(True).run()
             assert not app.exception
             assert any('4,800.00' in m.value for m in app.markdown)
