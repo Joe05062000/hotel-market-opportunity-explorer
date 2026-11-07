@@ -7,13 +7,14 @@ import subprocess
 
 ROOT=Path(__file__).resolve().parents[1]
 ALLOWED={
-    '.gitignore','.streamlit/config.toml','README.md','app.py','public_core.py',
+    '.gitignore','.streamlit/config.toml','README.md','app.py','public_core.py','pricing.py','pricing_ui.py',
     'requirements.txt','requirements-dev.txt','pytest.ini',
     'data/sources.json','data/release_manifest.json','docs/DATA_REUSE.md','docs/DEPLOYMENT.md',
     'scripts/check_release.py','scripts/publish_github.sh','tests/test_public.py',
 }
 # Original, visually reviewed captures of public UI and hypothetical calculations only.
 APPROVED_IMAGES = {
+    'docs/images/pricing-decision-lab.jpg': '629e070292385bb500bc93b4410d04cf2b7db4b3a9c3cd31d4c7d47ad7339406',
     'docs/images/guided-data-assistant.jpg': '4df1f40db27c7046eae6e1bad6a3fcc8d912a178a522895462c4fc653308ea7b',
     'docs/images/market-brief.jpg': '2aad6e3621fb83013691c8e6aad73548c6736ff667a9de877daf0b99deb1c8ee',
     'docs/images/scenario-explorer.jpg': '79a17e925d399e27f329657711218ef162cc73cbae019122116f71a530b2b11b',

@@ -4,6 +4,7 @@ import pytest
 from streamlit.testing.v1 import AppTest
 from public_core import QUESTIONS, load_metadata, guided_answer, revenue_scenario, public_brief
 from scripts.check_release import check
+from pricing import SYNTHETIC_CSV, pricing_decision, summarize_upload
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -59,7 +60,7 @@ def test_public_app_all_pages_and_presets_without_secrets(monkeypatch):
     assert not app.exception
     assert app.sidebar.radio[0].options == ['Scenario Explorer', 'Guided Analysis', 'Market Brief & Sources']
     assert app.sidebar.radio[0].value == 'Scenario Explorer'
-    assert app.metric[2].value == '$8,760,000.00'
+    assert app.metric[0].value == '77.42%'
     assert not app.chat_input
     for page in list(app.sidebar.radio[0].options):
         app.sidebar.radio[0].set_value(page).run(timeout=30)
@@ -76,8 +77,8 @@ def test_public_app_all_pages_and_presets_without_secrets(monkeypatch):
             app.number_input(key='Base_days').set_value(20).run()
             app.slider(key='Base_occupancy').set_value(40.0).run()
             app.number_input(key='Base_adr').set_value(120.0).run()
-            assert app.metric[2].value=='$4,800.00'
-            assert app.metric[3].value=='$48.00'
+            assert app.metric[6].value=='$4,800.00'
+            assert app.metric[7].value=='$48.00'
         if page=='Market Brief & Sources':
             assert {button.label for button in app.get('download_button')} == {
                 'Download public evidence brief', 'Download source register (metadata only)'
@@ -102,3 +103,59 @@ def test_release_allowlist_and_secret_scan():
     assert 'data/observations.csv' not in included
     assert not any(name.endswith(('.png','.pdf','.csv')) for name in included)
     assert all('..' not in name for name in included)
+
+def test_pricing_parity_and_cushion():
+    result = pricing_decision(100, 365, 300, 80, 310, 80)
+    assert result['parity_occupancy'] == pytest.approx(77.41935484)
+    assert result['occupancy_cushion'] == pytest.approx(2.58064516)
+    assert result['revenue_change'] == 292000
+    assert result['revpar_change'] == 8
+    equal = pricing_decision(100, 365, 300, 80, 310, result['parity_occupancy'])
+    assert equal['revenue_change'] == pytest.approx(0, abs=1e-8)
+
+
+def test_parity_edge_cases():
+    assert pricing_decision(100, 365, 300, 80, 200, 100)['status'] == 'above_capacity'
+    assert pricing_decision(100, 365, 300, 80, 0, 80)['status'] == 'impossible'
+    assert pricing_decision(100, 365, 0, 80, 0, 80)['status'] == 'any'
+    assert pricing_decision(0, 365, 300, 80, 310, 80)['status'] == 'any'
+    assert pricing_decision(100, 365, 0, 80, 310, 80)['parity_occupancy'] == 0
+
+
+def test_valid_csv_uses_weighted_period_totals():
+    result = summarize_upload(SYNTHETIC_CSV.encode())
+    assert (str(result['start']), str(result['end']), result['rows']) == ('2026-01-01', '2026-01-02', 2)
+    assert result['occupancy'] == pytest.approx(120 / 180 * 100)
+    assert result['adr'] == pytest.approx(34000 / 120)
+    assert result['revpar'] == pytest.approx(34000 / 180)
+    empty_capacity = summarize_upload(b'date,rooms_available,rooms_sold,room_revenue\n2026-01-01,0,0,0\n')
+    assert empty_capacity['occupancy'] is empty_capacity['adr'] is empty_capacity['revpar'] is None
+
+
+@pytest.mark.parametrize(('rows', 'message'), [
+    ('2026-02-30,100,80,24000', 'valid YYYY-MM-DD'),
+    ('2026-01-01,100,80,24000\n2026-01-01,80,40,10000', 'duplicate date'),
+    ('2026-01-01,100,101,24000', 'rooms sold exceed'),
+    ('2026-01-01,100,80,-1', 'nonnegative'),
+    ('2026-01-01,100,80,NaN', 'finite'),
+])
+def test_rejected_csv(rows, message):
+    with pytest.raises(ValueError, match=message):
+        summarize_upload(('date,rooms_available,rooms_sold,room_revenue\n' + rows).encode())
+
+
+def test_csv_uploader_reports_valid_totals_and_rejects_invalid_rows():
+    app = AppTest.from_file(str(ROOT/'app.py')).run()
+    app.get('file_uploader')[0].upload('synthetic.csv', SYNTHETIC_CSV.encode(), 'text/csv').run()
+    assert not app.exception and not app.error
+    values = {metric.label: metric.value for metric in app.metric}
+    assert values['Occupancy'] == '66.67%'
+    assert values['ADR'] == '$283.33'
+    assert values['RevPAR'] == '$188.89'
+    assert any('2026-01-01 to 2026-01-02 · 2 daily rows' in m.value for m in app.markdown)
+    invalid = b'date,rooms_available,rooms_sold,room_revenue\n2026-01-01,100,101,24000\n'
+    app.get('file_uploader')[0].set_value(('invalid.csv', invalid, 'text/csv')).run()
+    assert any('rooms sold exceed' in error.value for error in app.error)
+    assert not any(metric.label == 'Occupancy' for metric in app.metric)
+    fresh = AppTest.from_file(str(ROOT/'app.py')).run()
+    assert not any(metric.label == 'Occupancy' for metric in fresh.metric)

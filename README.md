@@ -10,11 +10,21 @@ Built with **Python · Streamlit · pandas · Plotly**. The **guided data assist
 
 ## App preview
 
-These screenshots show the working public features in an earlier layout. The live app now opens directly to Scenario Explorer, with Guided Analysis and Market Brief & Sources in the sidebar. Every amount shown is a **hypothetical input or calculated scenario result**. No excluded historical dataset, historical chart or research screenshot is used here. Browser tabs, credentials and personal information are outside the captures.
+The Pricing Decision Lab screenshot shows the current layout; the other previews show the same public features in an earlier layout. The live app now opens directly to Scenario Explorer, with Guided Analysis and Market Brief & Sources in the sidebar. Every amount shown is a **hypothetical input or calculated scenario result**. No excluded historical dataset, historical chart or research screenshot is used here. Browser tabs, credentials and personal information are outside the captures.
+
+### Pricing Decision Lab
+
+Open **Scenario Explorer → Pricing Decision Lab** to compare a baseline and a proposed room rate at the same room inventory and operating days. Enter your own occupancy assumptions. The heatmap shows changes in room revenue, with the baseline, proposed case and room-revenue parity line marked.
+
+**Worked example:** Baseline ADR of **USD 300** at **80% occupancy** gives **USD 240 RevPAR**. At a proposed rate of **USD 310**, room-revenue parity is **240 ÷ 310 × 100 = 77.42% occupancy**. If you assume occupancy stays at 80%, the cushion is **2.58 percentage points** and RevPAR rises **USD 8**. For 100 rooms over 365 operating days, that adds **USD 292,000 in room revenue before costs**. The example is hypothetical and does not forecast demand.
+
+![Pricing Decision Lab with parity, occupancy cushion and the revenue change heatmap](docs/images/pricing-decision-lab.jpg)
+
+The optional daily CSV uploader accepts `date,rooms_available,rooms_sold,room_revenue` and computes occupancy, ADR and RevPAR from period totals. It reports the dates and number of rows, rejects invalid or duplicate dates and inconsistent room counts, and offers a clearly labeled synthetic example. Uploads are processed in the active session and are not bundled with the public data or exported in the evidence brief. Open **How the analysis works** for formulas and zero-rate cases.
 
 ### 1. Compare hotel revenue scenarios
 
-Open **Scenario Explorer** and edit rooms, operating days, occupancy and nominal ADR for downside, base and upside cases. Python calculates available room-nights, expected sold room-nights, room revenue and RevPAR. Review the revenue chart and export the assumptions/results as CSV. Room revenue is **before costs, not profit**.
+Open **Scenario Explorer → Revenue scenarios** and edit rooms, operating days, occupancy and nominal ADR for downside, base and upside cases. Python calculates available room-nights, expected sold room-nights, room revenue and RevPAR. Review the revenue chart and export the assumptions/results as CSV. Room revenue is **before costs, not profit**.
 
 ![Scenario explorer with editable hypothetical hotel assumptions and calculated room revenue and RevPAR](docs/images/scenario-explorer.jpg)
 

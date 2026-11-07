@@ -3,6 +3,7 @@ import json
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from pricing_ui import render_pricing_lab
 from public_core import (ROOT, QUESTIONS, DEFAULT_CASES, DEFINITIONS, load_metadata,
                          revenue_scenario, guided_answer, public_brief, source_link)
 
@@ -52,34 +53,38 @@ if page=='Guided Analysis':
 elif page=='Scenario Explorer':
     st.subheader('Scenario Explorer')
     st.markdown('Test how room rates and occupancy affect hotel room revenue.')
-    st.caption('Hypothetical assumptions only. Room revenue excludes costs and is not profit.')
-    cases={}
-    saved=st.session_state.get('revenue_cases',{})
-    for column,(name,initial) in zip(st.columns(3),DEFAULT_CASES.items()):
-        default=saved.get(name,initial)
-        with column:
-            st.markdown(f'**{name} · hypothetical**')
-            capacity,horizon=st.columns(2)
-            rooms=capacity.number_input(f'{name} room count',min_value=0,max_value=100000,value=default['rooms'],step=1,key=f'{name}_rooms')
-            days=horizon.number_input(f'{name} operating days',min_value=0,max_value=3660,value=default['operating_days'],step=1,key=f'{name}_days')
-            occupancy=st.slider(f'{name} occupancy (%)',0.0,100.0,default['occupancy'],0.5,key=f'{name}_occupancy')
-            adr=st.number_input(f'{name} ADR (nominal USD / sold room-night)',min_value=0.0,max_value=2000.0,value=default['adr'],step=5.0,key=f'{name}_adr')
-            case=revenue_scenario(rooms,days,occupancy,adr)
-            cases[name]=case
-            st.metric(f'{name} room revenue',f"${case['room_revenue']:,.2f}")
-            st.metric(f'{name} RevPAR',f"${case['revpar']:,.2f}")
-    st.session_state['revenue_cases']=cases
-    results=pd.DataFrame([{'Hypothetical case':name,**case} for name,case in cases.items()])
-    if not cases['Downside']['room_revenue'] <= cases['Base']['room_revenue'] <= cases['Upside']['room_revenue']:
-        st.info('The edited revenues do not follow downside ≤ base ≤ upside. Case labels do not force an ordering; review the assumptions.')
-    outputs=results[['Hypothetical case','available_room_nights','sold_room_nights','room_revenue','revpar']].rename(columns={'available_room_nights':'Available room-nights','sold_room_nights':'Expected sold room-nights','room_revenue':'Room revenue (USD)','revpar':'RevPAR (USD)'})
-    st.dataframe(outputs.style.format({'Available room-nights':'{:,.0f}','Expected sold room-nights':'{:,.2f}','Room revenue (USD)':'{:,.2f}','RevPAR (USD)':'{:,.2f}'}),hide_index=True,width='stretch')
-    fig=px.bar(results,x='Hypothetical case',y='room_revenue',color_discrete_sequence=['#087f8c'],labels={'room_revenue':'Hypothetical room revenue (USD, before costs)'})
-    fig.update_layout(title='Hypothetical revenue over each case’s assumed operating days',paper_bgcolor='#faf7ef',plot_bgcolor='#faf7ef',font_color='#142b43')
-    st.plotly_chart(fig,width='stretch')
-    st.markdown('**Formulas:** available room-nights = rooms × days; sold room-nights = available × occupancy / 100; room revenue = sold × ADR; RevPAR = ADR × occupancy / 100.')
-    st.caption('Expected sold room-nights may be fractional. Occupancy is entered as a percentage. If rooms or days differ, revenue changes reflect capacity or horizon too. No price-demand response, seasonality, taxes or costs are modeled. RevPAR remains the rate/occupancy assumption even when assumed capacity is zero.')
-    st.download_button('Download hypothetical scenarios CSV',results.to_csv(index=False),'hypothetical_scenarios.csv','text/csv')
+    lab_tab, scenarios_tab = st.tabs(['Pricing Decision Lab', 'Revenue scenarios'])
+    with lab_tab:
+        render_pricing_lab()
+    with scenarios_tab:
+        st.caption('Hypothetical assumptions only. Room revenue excludes costs and is not profit.')
+        cases={}
+        saved=st.session_state.get('revenue_cases',{})
+        for column,(name,initial) in zip(st.columns(3),DEFAULT_CASES.items()):
+            default=saved.get(name,initial)
+            with column:
+                st.markdown(f'**{name} · hypothetical**')
+                capacity,horizon=st.columns(2)
+                rooms=capacity.number_input(f'{name} room count',min_value=0,max_value=100000,value=default['rooms'],step=1,key=f'{name}_rooms')
+                days=horizon.number_input(f'{name} operating days',min_value=0,max_value=3660,value=default['operating_days'],step=1,key=f'{name}_days')
+                occupancy=st.slider(f'{name} occupancy (%)',0.0,100.0,default['occupancy'],0.5,key=f'{name}_occupancy')
+                adr=st.number_input(f'{name} ADR (nominal USD / sold room-night)',min_value=0.0,max_value=2000.0,value=default['adr'],step=5.0,key=f'{name}_adr')
+                case=revenue_scenario(rooms,days,occupancy,adr)
+                cases[name]=case
+                st.metric(f'{name} room revenue',f"${case['room_revenue']:,.2f}")
+                st.metric(f'{name} RevPAR',f"${case['revpar']:,.2f}")
+        st.session_state['revenue_cases']=cases
+        results=pd.DataFrame([{'Hypothetical case':name,**case} for name,case in cases.items()])
+        if not cases['Downside']['room_revenue'] <= cases['Base']['room_revenue'] <= cases['Upside']['room_revenue']:
+            st.info('The edited revenues do not follow downside ≤ base ≤ upside. Case labels do not force an ordering; review the assumptions.')
+        outputs=results[['Hypothetical case','available_room_nights','sold_room_nights','room_revenue','revpar']].rename(columns={'available_room_nights':'Available room-nights','sold_room_nights':'Expected sold room-nights','room_revenue':'Room revenue (USD)','revpar':'RevPAR (USD)'})
+        st.dataframe(outputs.style.format({'Available room-nights':'{:,.0f}','Expected sold room-nights':'{:,.2f}','Room revenue (USD)':'{:,.2f}','RevPAR (USD)':'{:,.2f}'}),hide_index=True,width='stretch')
+        fig=px.bar(results,x='Hypothetical case',y='room_revenue',color_discrete_sequence=['#087f8c'],labels={'room_revenue':'Hypothetical room revenue (USD, before costs)'})
+        fig.update_layout(title='Hypothetical revenue over each case’s assumed operating days',paper_bgcolor='#faf7ef',plot_bgcolor='#faf7ef',font_color='#142b43')
+        st.plotly_chart(fig,width='stretch')
+        st.markdown('**Formulas:** available room-nights = rooms × days; sold room-nights = available × occupancy / 100; room revenue = sold × ADR; RevPAR = ADR × occupancy / 100.')
+        st.caption('Expected sold room-nights may be fractional. Occupancy is entered as a percentage. If rooms or days differ, revenue changes reflect capacity or horizon too. No price-demand response, seasonality, taxes or costs are modeled. RevPAR remains the rate/occupancy assumption even when assumed capacity is zero.')
+        st.download_button('Download hypothetical scenarios CSV',results.to_csv(index=False),'hypothetical_scenarios.csv','text/csv')
 
 else:
     st.subheader('Market Brief & Sources')
